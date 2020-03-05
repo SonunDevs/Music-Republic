@@ -1,0 +1,31 @@
+{
+  "connection": "default",
+  "collectionName": "albums",
+  "info": {
+    "name": "Albums"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "name": {
+      "type": "string",
+      "required": true
+    },
+    "album_cover": {
+      "model": "file",
+      "via": "related",
+      "plugin": "upload",
+      "required": true
+    },
+    "tracks": {
+      "collection": "tracks",
+      "via": "album"
+    },
+    "artist": {
+      "via": "albums",
+      "model": "artist"
+    }
+  }
+}
