@@ -1,0 +1,30 @@
+{
+  "connection": "default",
+  "collectionName": "artists",
+  "info": {
+    "name": "Artist"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "name": {
+      "type": "string"
+    },
+    "photo": {
+      "collection": "file",
+      "via": "related",
+      "plugin": "upload",
+      "required": false
+    },
+    "albums": {
+      "collection": "albums",
+      "via": "artist"
+    },
+    "tracks": {
+      "collection": "tracks",
+      "via": "artist"
+    }
+  }
+}

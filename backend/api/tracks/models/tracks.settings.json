@@ -1,0 +1,31 @@
+{
+  "connection": "default",
+  "collectionName": "tracks",
+  "info": {
+    "name": "tracks"
+  },
+  "options": {
+    "increments": true,
+    "timestamps": true
+  },
+  "attributes": {
+    "title": {
+      "type": "text",
+      "required": true
+    },
+    "mp3": {
+      "model": "file",
+      "via": "related",
+      "plugin": "upload",
+      "required": true
+    },
+    "album": {
+      "via": "tracks",
+      "model": "albums"
+    },
+    "artist": {
+      "via": "tracks",
+      "model": "artist"
+    }
+  }
+}
