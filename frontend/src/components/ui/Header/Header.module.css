@@ -1,0 +1,36 @@
+.Header {
+  width: 100%;
+  min-height: 250px;
+  height: calc(100vw / 2.3);
+  color: white;
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  background-image: url(https://zort.ru/media/uploads/images/artists/daft-punk_314.jpeg);
+  background-size: contain;
+  box-shadow: 0 4px 4px rgba(0, 0, 0, .25);
+}
+
+.Header .headerPlay {
+  height: 40px;
+  width: 100%;
+  background-color: #476198;
+  display: flex;
+  padding: 0 40px;
+  box-sizing: border-box;
+  align-items: center;
+}
+
+.headerPlay h3,
+.headerPlay p {
+  font-weight: 500;
+  font-size: 18px;
+}
+
+.headerPlay h3 {
+  text-transform: uppercase;
+}
+
+.headerPlay span {
+  margin: 0 5px;
+}
