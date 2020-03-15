@@ -8,11 +8,13 @@ import Drawer from "../../components/Drawer/Drawer";
 function Home(props) {
   return (
     <div className={classes.Home}>
-      <Nav />
-      <Header />
+      <div className={classes.container}>
+        <Nav />
+        <Header />
+        <div className={classes.content}></div>
+        <Footer />
+      </div>
       <Drawer />
-      <div className={classes.content}></div>
-      <Footer />
     </div>
   );
 }

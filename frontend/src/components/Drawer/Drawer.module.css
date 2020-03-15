@@ -1,0 +1,6 @@
+.Drawer {
+  width: 360px;
+  height: 100vh;
+  background-color: #293858;
+  box-shadow: -4px 0 6px rgba(0, 0, 0, .5);
+}

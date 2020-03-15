@@ -1,13 +1,14 @@
 .Header {
   width: 100%;
   min-height: 250px;
-  height: calc(100vw / 2.3);
+  height: calc(100vw / 3);
   color: white;
   position: relative;
   display: flex;
   align-items: flex-end;
   background-image: url(https://zort.ru/media/uploads/images/artists/daft-punk_314.jpeg);
-  background-size: contain;
+  background-size: cover;
+  background-position: center;
   box-shadow: 0 4px 4px rgba(0, 0, 0, .25);
 }
 
