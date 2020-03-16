@@ -1,4 +1,101 @@
+.Player {
+  margin-top: 100px;
+}
+
 .Player button {
   border: none;
   background-color: transparent;
+}
+
+.Player .slider_wrapper {
+  height: 25px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 10px;
+  box-sizing: border-box;
+}
+
+.Player .slider_wrapper,
+.Player .volume_slider_wrapper {
+  width: 100%;
+  background-color: #142348;
+  position: relative;
+}
+
+.Player .volume_slider_wrapper {
+  height: 20px;
+}
+
+.Player .volume_box {
+  display: flex;
+  align-items: center;
+}
+
+.Player .slider,
+.Player .volume_slider {
+  height: 100%;
+  background-color: #F7BC13;
+  position: absolute;
+  left: 0;
+  top: 0;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, .25);
+}
+
+.Player .slider {
+  width: 1px;
+}
+
+.Player .slider_box {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  z-index: 4;
+}
+
+.Player .volume_slider {
+  width: 100%;
+}
+
+.Player .slider_time {
+  font-weight: bold;
+  font-size: 10px;
+  color: white;
+  position: relative;
+  z-index: 3;
+}
+
+.Player .player__controls_container {
+  width: 100%;
+  padding: 40px 20px;
+  box-sizing: border-box;
+}
+
+.Player .controls {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.Player .options {
+  padding: 20px 0;
+  box-sizing: border-box;
+  display: none;
+}
+
+.Player .active {
+  display: block;
+}
+
+.Player .options_playing {
+  margin-top: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.Player .options_playing button {
+  margin: 0 10px;
 }
