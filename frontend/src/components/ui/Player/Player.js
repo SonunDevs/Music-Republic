@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import classes from "./Player.module.css";
-import play_btn_png from "../../../assets/icons/pause-button.png";
+import play_btn_png from "../../../assets/icons/play-button.png";
+import pause_btn_png from "../../../assets/icons/pause-button.png";
 import prev_btn_png from "../../../assets/icons/prev-button.png";
 import next_btn_png from "../../../assets/icons/next-button.png";
 import option_btn_png from "../../../assets/icons/option-button.png";
@@ -17,7 +18,9 @@ class Player extends Component {
     },
     slider_width: 1,
     volume_slider_width: "100%",
-    slider_focus: false
+    slider_focus: false,
+    music: null,
+    play: false
   };
 
   option_drawer = () => {
@@ -83,9 +86,43 @@ class Player extends Component {
     }
   };
 
+  componentDidMount() {
+    this.setState({
+      music: document.querySelector("#music")
+    });
+  }
+
+  play_btn_func = event => {
+    let play = !this.state.play;
+
+    if (play) {
+      this.state.music.play();
+    } else {
+      this.state.music.pause();
+    }
+
+    this.setState({
+      play
+    });
+  };
+
   render() {
+    let play_button_icon = play_btn_png;
+
+    if (this.state.play) {
+      play_button_icon = pause_btn_png;
+    } else {
+      play_button_icon = play_btn_png;
+    }
+
     return (
       <div className={classes.Player}>
+        <audio preload="true" id="music">
+          <source
+            src="https://mn1.sunproxy.net/file/UHdGQ3p1anBCZU5UL1VSaG13cXM3a1dlUW5vZGg3eEZIT3dhcUQwYVlzamRzYzFlbjZuUW9EdnpkbnBmSERpU0VDVncyRUMrYWl1YWMrUGhMRGJNM2h2UmlHYUxveUZQUmRhUFBXSk1YK2s9/Porno_Graffitti_-_The_Day_(mp3.mn).mp3"
+            type="audio/mpeg"
+          />
+        </audio>
         <div className={classes.slider_wrapper}>
           <span className={classes.slider_time}>0:00</span>
           <div
@@ -112,8 +149,8 @@ class Player extends Component {
               <button className={classes.prev_btn}>
                 <img src={prev_btn_png} alt="prev button" />
               </button>
-              <button className={classes.play_btn}>
-                <img src={play_btn_png} alt="play and pause buttons" />
+              <button className={classes.play_btn} onClick={this.play_btn_func}>
+                <img src={play_button_icon} alt="play and pause buttons" />
               </button>
               <button className={classes.next_btn}>
                 <img src={next_btn_png} alt="next button" />
