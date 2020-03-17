@@ -99,3 +99,13 @@
 .Player .options_playing button {
   margin: 0 10px;
 }
+
+input {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 2;
+  width: 100%;
+  margin: 0;
+  opacity: 0;
+}

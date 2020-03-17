@@ -20,7 +20,8 @@ class Player extends Component {
     volume_slider_width: "100%",
     slider_focus: false,
     music: null,
-    play: false
+    play: false,
+    volume: 1
   };
 
   option_drawer = () => {
@@ -64,26 +65,30 @@ class Player extends Component {
 
   slider_check = (type, event) => {
     let size = event.target.getBoundingClientRect();
+    let slider_width = this.state.slider_width;
 
     if (size.x > event.clientX) {
-      this.setWidth(type, 0);
+      slider_width = 0;
     } else if (size.x + size.width < event.clientX) {
-      this.setWidth(type, size.width);
+      slider_width = size.width;
     } else {
-      this.setWidth(type, event.clientX - size.x);
+      slider_width = event.clientX - size.x;
     }
+
+    this.setState({
+      slider_width
+    });
   };
 
-  setWidth = (type, value) => {
-    if (type === "track_slider") {
-      this.setState({
-        slider_width: value
-      });
-    } else if (type === "volume_slider") {
-      this.setState({
-        volume_slider_width: value
-      });
-    }
+  changeVolume = event => {
+    let volume = +event.target.value;
+    let musicVolume = this.state.music;
+
+    musicVolume.volume = volume; // change music volume
+
+    this.setState({
+      volume
+    });
   };
 
   componentDidMount() {
@@ -168,18 +173,17 @@ class Player extends Component {
               <button className={classes.volume}>
                 <img src={volume_png} alt="volume button" />
               </button>
-              <div
-                className={classes.volume_slider_wrapper}
-                onMouseDown={event => this.slider_click("volume_slider", event)}
-                onMouseMove={event =>
-                  this.slider_cursor_move("volume_slider", event)
-                }
-                onMouseUp={event => this.slider_not_focus()}
-                onMouseLeave={event => this.slider_not_focus()}
-              >
+              <div className={classes.volume_slider_wrapper}>
+                <input
+                  type="range"
+                  step="0.1"
+                  max="1"
+                  min="0"
+                  onChange={this.changeVolume}
+                />
                 <div
                   className={classes.volume_slider}
-                  style={{ width: this.state.volume_slider_width + "px" }}
+                  style={{ width: this.state.volume * 100 + "%" }}
                 ></div>
               </div>
             </div>
