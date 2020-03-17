@@ -16,7 +16,11 @@ class Player extends Component {
       open: false,
       state: "none"
     },
-    slider_width: 1,
+    slider_width: {
+      full: "100%",
+      elapsed: 1,
+      buffered: 0
+    },
     volume_slider_width: "100%",
     slider_focus: false,
     music: null,
@@ -44,16 +48,16 @@ class Player extends Component {
     }
   };
 
-  slider_click = (type, event) => {
-    this.slider_check(type, event);
+  slider_click = event => {
+    this.slider_check(event);
     this.setState({
       slider_focus: true
     });
   };
 
-  slider_cursor_move = (type, event) => {
+  slider_cursor_move = event => {
     if (this.state.slider_focus) {
-      this.slider_check(type, event);
+      this.slider_check(event);
     }
   };
 
@@ -63,17 +67,46 @@ class Player extends Component {
     });
   };
 
-  slider_check = (type, event) => {
+  slider_check = event => {
     let size = event.target.getBoundingClientRect();
     let slider_width = this.state.slider_width;
+    let music = this.state.music;
 
     if (size.x > event.clientX) {
-      slider_width = 0;
+      slider_width.elapsed = 0;
     } else if (size.x + size.width < event.clientX) {
-      slider_width = size.width;
+      slider_width.elapsed = size.width;
     } else {
-      slider_width = event.clientX - size.x;
+      slider_width.elapsed = event.clientX - size.x;
     }
+
+    music.currentTime = slider_width.elapsed;
+
+    this.setState({
+      slider_width
+    });
+  };
+
+  timeUpdate = () => {
+    let music = this.state.music;
+    let slider_width = this.state.slider_width;
+    let elapsed =
+      this.state.slider_width.full * (music.currentTime / music.duration);
+    slider_width.elapsed = elapsed;
+
+    this.setState({
+      slider_width
+    });
+
+    this.bufferUpdate();
+  };
+
+  bufferUpdate = () => {
+    let music = this.state.music;
+    let slider_width = this.state.slider_width;
+    let bufferPercent =
+      this.state.slider_width.full * (music.buffered.end(0) / music.duration);
+    slider_width.buffered = bufferPercent;
 
     this.setState({
       slider_width
@@ -84,7 +117,7 @@ class Player extends Component {
     let volume = +event.target.value;
     let musicVolume = this.state.music;
 
-    musicVolume.volume = volume; // change music volume
+    musicVolume.volume = volume;
 
     this.setState({
       volume
@@ -92,12 +125,18 @@ class Player extends Component {
   };
 
   componentDidMount() {
+    let slider_width = this.state.slider_width;
+    slider_width.full = document
+      .querySelector("#slider_box")
+      .getBoundingClientRect().width;
+
     this.setState({
-      music: document.querySelector("#music")
+      music: document.querySelector("#music"),
+      slider_width
     });
   }
 
-  play_btn_func = event => {
+  play_btn_func = () => {
     let play = !this.state.play;
 
     if (play) {
@@ -111,8 +150,38 @@ class Player extends Component {
     });
   };
 
+  formatSecondsAsTime = (secs, format) => {
+    var hr = Math.floor(secs / 3600);
+    var min = Math.floor((secs - hr * 3600) / 60);
+    var sec = Math.floor(secs - hr * 3600 - min * 60);
+    if (sec < 10) {
+      sec = "0" + sec;
+    }
+    return min + ":" + sec;
+  };
+
   render() {
     let play_button_icon = play_btn_png;
+    let music_time = {
+      currentTime: "0:00",
+      duration: "0:00"
+    };
+
+    if (this.state.music !== null) {
+      let dur = this.formatSecondsAsTime(this.state.music.duration);
+
+      dur === "NaN:NaN" ? (dur = "0:00") : (dur = dur + "");
+
+      music_time = {
+        currentTime: this.formatSecondsAsTime(this.state.music.currentTime),
+        duration: dur
+      };
+    } else {
+      music_time = {
+        currentTime: "0:00",
+        duration: "0:00"
+      };
+    }
 
     if (this.state.play) {
       play_button_icon = pause_btn_png;
@@ -122,27 +191,30 @@ class Player extends Component {
 
     return (
       <div className={classes.Player}>
-        <audio preload="true" id="music">
+        <audio preload="true" id="music" onTimeUpdate={this.timeUpdate}>
           <source
             src="https://mn1.sunproxy.net/file/UHdGQ3p1anBCZU5UL1VSaG13cXM3a1dlUW5vZGg3eEZIT3dhcUQwYVlzamRzYzFlbjZuUW9EdnpkbnBmSERpU0VDVncyRUMrYWl1YWMrUGhMRGJNM2h2UmlHYUxveUZQUmRhUFBXSk1YK2s9/Porno_Graffitti_-_The_Day_(mp3.mn).mp3"
             type="audio/mpeg"
           />
         </audio>
         <div className={classes.slider_wrapper}>
-          <span className={classes.slider_time}>0:00</span>
+          <span className={classes.slider_time}>{music_time.currentTime}</span>
           <div
             className={classes.slider}
-            style={{ width: this.state.slider_width + "px" }}
+            style={{ width: this.state.slider_width.elapsed + "px" }}
           ></div>
-          <span className={classes.slider_time}>0:00</span>
+          <div
+            className={classes.slider_buffered}
+            style={{ width: this.state.slider_width.buffered + "px" }}
+          ></div>
+          <span className={classes.slider_time}>{music_time.duration}</span>
           <div
             className={classes.slider_box}
-            onMouseDown={event => this.slider_click("track_slider", event)}
-            onMouseMove={event =>
-              this.slider_cursor_move("track_slider", event)
-            }
-            onMouseUp={event => this.slider_not_focus()}
-            onMouseLeave={event => this.slider_not_focus()}
+            id="slider_box"
+            onMouseDown={this.slider_click}
+            onMouseMove={this.slider_cursor_move}
+            onMouseUp={this.slider_not_focus}
+            onMouseLeave={this.slider_not_focus}
           ></div>
         </div>
         <div className={classes.player__controls_container}>

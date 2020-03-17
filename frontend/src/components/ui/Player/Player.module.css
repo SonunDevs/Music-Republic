@@ -42,8 +42,19 @@
   box-shadow: 0 4px 6px rgba(0, 0, 0, .25);
 }
 
+.Player .slider_buffered {
+  width: 0;
+  height: 100%;
+  background-color: #172f6b;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 2;
+}
+
 .Player .slider {
   width: 1px;
+  z-index: 3;
 }
 
 .Player .slider_box {
