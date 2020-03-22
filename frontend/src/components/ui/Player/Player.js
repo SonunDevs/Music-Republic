@@ -80,7 +80,9 @@ class Player extends Component {
       slider_width.elapsed = event.clientX - size.x;
     }
 
-    music.currentTime = slider_width.elapsed;
+    music.currentTime = Math.floor(
+      (slider_width.elapsed * music.duration) / size.width
+    );
 
     this.setState({
       slider_width
